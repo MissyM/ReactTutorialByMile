@@ -4,11 +4,12 @@
   <script src="https://unpkg.com/react-dom@16.12.0/umd/react-dom.development.js"></script>
   <script src="https://unpkg.com/@babel/standalone@7.8.3/babel.js"></script>
   <script type="text/babel">
-    const rootElement = document.getElementById("root");
-    const children = "Inteligent perceverance by Mile";
-    const className = "container";
-    const props = { children, className };
-    const element = <div id="root-element" {...props}></div>;
-    ReactDOM.render(element, rootElement);
+    const element = (
+      <>
+        <span>Mile</span>
+        <span>Ya sabe React! Weeee!</span>
+      </>
+    );
+    ReactDOM.render(element, document.getElementById("root"));
   </script>
 </body>

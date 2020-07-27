@@ -1,0 +1,117 @@
+<body>
+    <div id="root"></div>
+    <script src="https://unpkg.com/react@16.12.0/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16.12.0/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.8.3/babel.js"></script>
+    <script type="text/babel"> 
+      function Child() {
+        console.log('%C     Child: render start', 'color: #D4E6D4')
+        // A useState Hook and console logging several useEffectHookss
+        const [count, setCount] = React.useState(() => {console.log ('%c    Child: useState callback ','color: tomato')
+          return 0;
+        });
+      //The useEffect hooks are called in order starting from the child useEffect
+        React.useEffect(() => {
+          console.log('%C     Child: useEffect no deps', 'color: Tomato')
+          return () => {
+            console.log(
+              '%c    Child: useEffect no deps cleanup',
+              'color: LightCoral'
+            );
+          }
+        });
+        React.useEffect(() => {
+          console.log(
+            '%c    Child: useEffect empty deps',
+            'color: MediumTurquoise'
+          );
+          return () => {
+            console.log(
+              '%c    Child: useEffect empty deps cleanup',
+              'color: MediumTurquoise'
+            );
+          };
+        }, []);
+        React.useEffect(() => {
+          console.log('%c    Child: useEffect with dep', 'color: HotPink');
+          return () => {
+            console.log(
+              '%c    Child: useEffect with dep cleanup',
+              'color: HotPink'
+            );
+          };
+        }, [count]);
+
+        const element = (
+          //Providing an update function, triggering a re-render
+          <button  onClick={() => setCount(previousCount => previousCount + 1)}>
+            {count}
+          </button>
+        );
+        //Console log that our React element is finished
+        console.log('%c Child: render end', 'color: MediumSpringGreen')
+        return element;
+      }
+        
+
+      function App() {
+        console.log('%cApp: render start', 'color: MediumSpringGreen')
+        //A boolean useState
+        const [showChild, setShowChild] = React.useState(() => {
+          console.log('%cApp: useState callback', 'color: tomato')
+          return false 
+        })
+        //The useEffect Hooks are called in order starting from the child useEffect
+        React.useEffect(() => {
+          console.log('%cApp: useEffect no deps', 'color: LightCoral');
+          return () => {
+            console.log('%cApp: useEffect no deps cleanup','color: LightCoral')
+          };
+        });
+        //Since this has no dependencies, it will not be called on updates
+        React.useEffect(() => {
+          console.log('%cApp: useEffect empty deps', 'color: MediumTurquiose');
+          return () => {
+            console.log('%cApp: useEffect empty deps cleanup', 'color: MediumTurquiose');
+
+          };
+        }, []);
+        React.useEffect(() => {
+          console.log('%cApp: useEffect with deps', 'color: HotPink');
+          return () => {
+            console.log('%cApp: useEffect with deps cleanup', 'color: HotPink');
+          };
+        }, [showChild]);
+        //Rendering UI child 'Child render start'
+        const element = (
+          <>
+            <label>
+              <input
+                type="checkbox"
+                checked={showChild}
+                onChange={ e => setShowChild(e.target.checked)}
+              />{' '}
+              Show child
+            </label>
+            <div
+              style ={{
+                padding: 10,
+                margin: 10,
+                height: 30,
+                width: 30,
+                border: 'solid'
+              }}
+            >
+            {showChild ? <Child/> : null}
+              
+            </div>
+          </>
+        );
+        console.log('%cApp: render end', 'color: MediumSpringGreen');
+        
+        return element;
+      }
+
+      ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
